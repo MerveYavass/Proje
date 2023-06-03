@@ -1,0 +1,42 @@
+"""airbnb URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/4.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path, include, re_path
+from django.conf.urls.static import static
+from django.conf import settings
+from . import views
+from django.views.static import serve
+from card.views import *
+
+urlpatterns = [
+    re_path(r'^media/(?P<path>.*)$', serve,{'document_root':settings.MEDIA_ROOT}),
+    re_path(r'^static/(?P<path>.*)$', serve,{'document_root':settings.STATIC_ROOT}),
+    path('admin/', admin.site.urls),
+    path('', include('card.urls')),
+    path('user/', include('user.urls')),
+    path('gizlilik/', views.gizlilik, name='gizlilik'),
+    path('siteharitasi/', views.siteharitasi, name='siteharitasi'),
+    path('evtasima/', views.evtasima, name='evtasima'),
+    path('cardDetay/', views.cardDetay, name='cardDetay'),
+    path('hesap/', views.hesap, name='hesap'),
+    path('harita/', views.harita, name='harita'),
+    path('seyahat/', views.seyahat, name='seyahat'),
+    path('mesajlar/', views.mesajlar, name='mesajlar'),
+    path('odeme/', views.odeme, name='odeme'),
+] + static (settings.MEDIA_URL,document_root = settings.MEDIA_ROOT) 
+
+
+handler404 = 'card.views.view_404'
